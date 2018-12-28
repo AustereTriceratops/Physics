@@ -1,0 +1,42 @@
+add_library('peasycam')
+import random as r
+
+
+
+x = [0]
+y = [0]
+z = [0]
+
+def setup():
+    size(1200,800,P3D)
+    smooth(8)
+    cam = PeasyCam(this,500)
+
+t=1
+def draw():
+    global x,y,z,t
+    background(240)
+    rotateY(t*PI/190)
+
+    
+    theta = r.uniform(0,2*PI)
+    psi = r.uniform(0,PI)
+    
+    x.append(0)
+    y.append(0)
+    z.append(0)
+    x[t] = x[t-1] + 6*cos(theta)*sin(psi)
+    y[t] = y[t-1] + 6*sin(theta)*sin(psi)
+    z[t] = z[t-1] + 6*cos(psi)
+    
+    i=1
+    while i<len(x):
+        strokeWeight(4)
+        stroke(20,180)
+        line(x[i-1],y[i-1],z[i-1],x[i],y[i],z[i])
+        i+=1
+        
+    if t%5 == 0:
+        saveFrame('randomWalk-####.png')
+        
+    t+=1
