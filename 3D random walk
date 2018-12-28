@@ -1,7 +1,9 @@
 add_library('peasycam')
 import random as r
 
-
+'''
+A simple 3D random walk simulation
+'''
 
 x = [0]
 y = [0]
