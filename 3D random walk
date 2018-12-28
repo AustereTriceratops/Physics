@@ -3,6 +3,8 @@ import random as r
 
 '''
 A simple 3D random walk simulation
+
+Result looks like this: https://imgur.com/cSHh0g0.gif
 '''
 
 x = [0]
