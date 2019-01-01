@@ -1,7 +1,9 @@
 add_library('peasycam')
 import random as r
 
-
+'''
+Shows several particles undergoing a random walk and renders a graph of the root mean square distance form the origin: https://i.imgur.com/HNy6i1H.png
+'''
 
 particles = 30
 x = [0]*particles
