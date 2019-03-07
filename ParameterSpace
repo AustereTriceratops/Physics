@@ -40,7 +40,6 @@ def update_params():
     b+= 0.01
     c+= 0.014
     d-= 0.011
-    print('updating')
     redraw()
     
     
@@ -54,9 +53,6 @@ def attractor():
 
 t=0
 def draw():
-    global f, xc,yc, x,y, t
-    
-
     translate(width/2, height/2)
     background(255)
     
