@@ -1,3 +1,9 @@
+'''
+A Processing.py program which will produce output similar to https://imgur.com/6VniFFx.gif
+
+
+'''
+
 maxpoints = 15000
 x = [0]*maxpoints
 y = [0]*maxpoints
