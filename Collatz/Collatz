@@ -1,0 +1,189 @@
+import random as r
+
+class Tree:
+    def __init__(self, n, sample=False, lim=0):
+        self.nodes = []  # unordered
+        self.elements = []
+        if sample:
+            self.stochastic_tree(n, lim)
+            self.stochastic_weights()
+        else:
+            self.generate_tree(n)
+            self.set_weights(n)
+        #print('finished intializing')
+
+
+    def populate(self, n):  # will probably never use this
+        for i in range(1,n+1):
+            self.nodes.append(Number(i))
+
+    def add_node(self,n):
+        self.nodes.append(Number(n))
+
+    def collatz_step(self, number, non_object=False):  # Number object
+        if non_object:
+            n = number
+            if n % 2 == 0:
+                return int(n / 2)
+            else:
+                return 3 * n + 1
+
+        else:
+            n = number.identity
+
+            if number.parity == 0:
+                result = Number(n / 2)
+                terminate = self.initialize_result(number, result)
+
+                return result, terminate
+            else:
+                result = Number(3 * n + 1)
+                terminate = self.initialize_result(number, result)
+
+                return result, terminate
+
+    def initialize_result(self, number, result):
+        if result in self.nodes:
+            s = self.nodes.index(result)
+            self.nodes[s].parents.append(number)
+            number.daughter = self.nodes[s]
+            return True
+        else:
+            result.parents.append(number)
+            number.daughter = result
+            self.nodes.append(result)
+            return False
+
+    def show_connections(self):
+        for node in self.nodes:
+            a = node
+            b, c = None, None
+
+            if node.daughter is not None:
+                b = node.daughter
+            if node.parents is not []:
+                c = node.parents
+
+            print([a, b, c])
+
+    def generate_tree(self, n):
+        #print("begin")
+        #print(n)
+        for i in range(1, n + 1, 1):
+            #print('finding trajectory for %d' %i)
+            
+            if i in self.nodes:
+                pass
+            else:
+                new_node = Number(i)
+                self.nodes.append(new_node)
+                #print(self.nodes)
+                
+                while new_node != 1:
+                    #print('it leads to another number')
+                    new_node, halt = self.collatz_step(new_node)
+                    if halt: 
+                        break
+
+            # print(t.nodes)
+            
+    def stochastic_tree(self, n, lim):
+        self.nodes.append(Number(1))
+        for _ in range(1, n + 1, 1):
+            i = r.randint(1,lim)
+            if i in self.nodes:
+                pass
+            else:
+                new_node = Number(i)
+                self.nodes.append(new_node)
+                self.elements.append(new_node)
+                #print(self.nodes)
+                
+                while new_node != 1:
+                    #print('it leads to another number')
+                    new_node, halt = self.collatz_step(new_node)
+                    if halt: 
+                        break
+
+    def traverse(self, n):
+        path = []
+        if n in self.nodes:
+            a = self.nodes.index(n)
+            path.append(n)
+            next = self.nodes[a].daughter
+            while next != 1:
+                path.append(next.identity)
+                next = next.daughter
+            return path
+        else:
+            return path
+
+    def set_weights(self, n):
+        for i in range(2, n + 1):  # iterates over leaves
+            index = self.nodes.index(i)
+            step = self.nodes[index]
+            step.weight += 1
+
+            while step.daughter is not None:
+                step = step.daughter
+                step.weight += 1
+                
+    def stochastic_weights(self):
+        for step in self.elements:
+            step.weight += 1
+
+            while step.daughter is not None:
+                step = step.daughter
+                step.weight += 1
+                
+    def reset_weights(self):
+        for node in self.nodes:
+            node.weight = 1
+                
+    def max_size(self):
+        r=0
+        for n in self.nodes:
+            if r < n.identity:
+                r = n.identity
+        return r
+
+
+class Number:
+    def __init__(self, id):
+        self.identity = int(id)
+        self.parity = self.identity % 2
+        self.parents = []
+        self.daughter = None
+        self.weight = 0
+        self.xy = None
+        self.theta = 0
+
+    def __eq__(self, other):
+        if type(other) == int:
+            if self.identity == other:
+                return True
+            else:
+                return False
+        else:
+            if self.identity == other.identity:
+                return True
+            else:
+                return False
+            
+    def __ne__(self, other):
+        if type(other) == int:
+            if self.identity == other:
+                return False
+            else:
+                return True
+        else:
+            if self.identity == other.identity:
+                return False
+            else:
+                return True
+
+    def __str__(self):
+        return str(self.identity)
+
+    def __repr__(self):
+        return str(self.identity)
