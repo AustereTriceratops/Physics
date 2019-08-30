@@ -1,0 +1,50 @@
+'''
+Processing.py doesn't support seaborn, so the color schemes have to be imported
+'''
+
+# plasma
+colorspace = [[0.050383, 0.029803, 0.527975, 1      ],
+ [0.207435, 0.017442, 0.596333, 1      ],
+ [0.32515,  0.006915, 0.639512, 1      ],
+ [0.435734, 0.001127, 0.659797, 1      ],
+ [0.546157, 0.038954, 0.64701,  1      ],
+ [0.640959, 0.116492, 0.602065, 1      ],
+ [0.723444, 0.196158, 0.538981, 1      ],
+ [0.798216, 0.280197, 0.469538, 1      ],
+ [0.85975,  0.360588, 0.406917, 1      ],
+ [0.9128,   0.444029, 0.346251, 1      ],
+ [0.95547,  0.533093, 0.28549,  1      ],
+ [0.985301, 0.63533,  0.221265, 1      ],
+ [0.994495, 0.74088,  0.166335, 1      ],
+ [0.979644, 0.854866, 0.142453, 1      ],
+ [0.940015, 0.975158, 0.131326, 1      ]]
+
+
+def create_colormap(_scale): 
+    colors = []
+    for i in range(0,_scale):
+        j = i*19.0/_scale
+        low = floor(j)
+        high = floor(j+1)
+            
+        x_0 = colorspace[low]
+        x_1 = colorspace[high]
+            
+        interpolated = [(1/(high-low))*((x_1[n] - x_0[n])*j + high*x_0[n] - low*x_1[n]) for n in range(0,4)]
+        col = [int(k*255) for k in interpolated]
+            
+        colors.append(col)
+    return colors
+
+def interpolate_color(r):   # r in [0, 1.0]
+    j = r*18.9
+    low = floor(j)
+    high = floor(j+1)
+            
+    x_0 = colorspace[low]
+    x_1 = colorspace[high]
+            
+    interpolated = [(1/(high-low))*((x_1[n] - x_0[n])*j + high*x_0[n] - low*x_1[n]) for n in range(0,4)]
+    col = [int(k*255) for k in interpolated]
+    
+    return col
