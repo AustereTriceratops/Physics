@@ -1,0 +1,74 @@
+import Colorspace as cs
+from Collatz import Tree, Number
+
+
+n = 1000
+t = Tree(n, sample=True, lim=8000)
+log_n = log(n)
+time = 0
+
+def sprawl(t, starting_index):       
+        node = t.nodes[starting_index]
+        #print("selected %d" %node.identity)
+        
+        if node.xy == None: # should only execute on initial node
+            node.xy = [0,0]
+            
+        for parent in node.parents:
+            #print('its parent is %d' %parent.identity)
+            #m = log(node.identity) + 5
+            m = 5.5
+            angle = node.theta
+            thickness = (log(parent.weight)+1.6)/1.6
+            log_weight = (log(parent.weight)/log_n)/2 + 0.5
+            
+            if parent.identity > node.identity:
+                parent.theta = PI/34 + angle   # PI/32 recommended
+                parent.xy = [node.xy[0] + m*cos(parent.theta), node.xy[1] - m*sin(parent.theta)]
+            elif parent.identity < node.identity:
+                parent.theta = - PI/20 + angle   #PI/17 recommended
+                parent.xy = [node.xy[0] + m*cos(parent.theta), node.xy[1] - m*sin(parent.theta)]
+                
+            ind = t.nodes.index(parent)
+            c = cs.interpolate_color(1.4*(1-log_weight))
+            stroke(c[0]+(1-log_weight)*(255-c[0]), c[1]+(1-log_weight)*(255-c[1]), c[2]+(1-log_weight)*(255-c[2]))
+            strokeWeight(thickness)
+            line(node.xy[0], node.xy[1], t.nodes[ind].xy[0], t.nodes[ind].xy[1])
+            
+            sprawl(t, ind) #recursion
+            
+            
+    
+def setup():
+    size(1800,1200)
+    noLoop()
+    blendMode(DARKEST)
+    
+def draw():
+    global t, n, log_n, time
+    background(255)
+    translate(350, 860)
+          
+    s = t.nodes.index(1)
+    print(s)
+    sprawl(t, s)
+    
+    
+    # for animation ==============================
+    
+    #saveFrame('Collatz_tree####.png')
+
+    
+    '''if time <= 10:
+        n+=10
+    elif time <= 30:
+        n += 60
+    elif time <= 60:
+        n += 100
+    elif time > 60:
+        n += 150
+    t.generate_tree(n)
+    t.reset_weights()
+    t.set_weights(n)
+    log_n = log(n)
+    time += 1'''
