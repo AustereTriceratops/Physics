@@ -1,4 +1,5 @@
 import random as r
+import Colorspace as cs
 
 class Tree:
     def __init__(self, n, sample=False, lim=0):
