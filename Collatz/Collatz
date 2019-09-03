@@ -10,7 +10,6 @@ class Tree:
         else:
             self.generate_tree(n)
             self.set_weights(n)
-        #print('finished intializing')
 
 
     def populate(self, n):  # will probably never use this
@@ -146,6 +145,36 @@ class Tree:
             if r < n.identity:
                 r = n.identity
         return r
+        
+    def sprawl(self, starting_index):  #can only be run in the Processing.py environment     
+        node = self.nodes[starting_index]
+        #print("selected %d" %node.identity)
+        
+        if node.xy == None: # should only execute on initial node
+            node.xy = [0,0]
+            
+        for parent in node.parents:
+            #print('its parent is %d' %parent.identity)
+            #m = log(node.identity) + 5
+            m = 5.5
+            angle = node.theta
+            thickness = (log(parent.weight)+1.6)/1.6
+            log_weight = (log(parent.weight)/log_n)/2 + 0.5
+            
+            if parent.identity > node.identity:
+                parent.theta = PI/34 + angle   # PI/32 recommended
+                parent.xy = [node.xy[0] + m*cos(parent.theta), node.xy[1] - m*sin(parent.theta)]
+            elif parent.identity < node.identity:
+                parent.theta = - PI/20 + angle   #PI/17 recommended
+                parent.xy = [node.xy[0] + m*cos(parent.theta), node.xy[1] - m*sin(parent.theta)]
+                
+            ind = t.nodes.index(parent)
+            c = cs.interpolate_color(1.4*(1-log_weight))
+            stroke(c[0]+(1-log_weight)*(255-c[0]), c[1]+(1-log_weight)*(255-c[1]), c[2]+(1-log_weight)*(255-c[2]))
+            strokeWeight(thickness)
+            line(node.xy[0], node.xy[1], t.nodes[ind].xy[0], t.nodes[ind].xy[1])
+            
+            self.sprawl(ind) #recursion
 
 
 class Number:
