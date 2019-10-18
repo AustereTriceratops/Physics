@@ -1,5 +1,3 @@
-import random as r
-import math as m
 %matplotlib inline
 import matplotlib.pyplot as plt
 import numpy as np
