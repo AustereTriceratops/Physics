@@ -19,3 +19,8 @@ def iterate(c, max_iterations=25):
 This yields the set.
 
 ![](https://i.imgur.com/YGKDiRW.png)
+
+
+To do:
++ Add high-precision floating point library
++ GPU acceleration
