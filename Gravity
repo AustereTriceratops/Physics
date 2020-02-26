@@ -1,0 +1,63 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+
+class particle():
+    def __init__(self, position=[1.0,1.0], velocity=[0.0,0.0], mass=1, fixed=False):
+        if type(position) is list:
+            position = np.array(position)
+        if type(velocity) is list:
+            velocity = np.array(velocity)
+        self.p = position
+        self.v = velocity
+        self.mass = mass
+        self.fixed = fixed
+        self.h = [self.p]
+
+    def move(self, env, step_size=0.05):  # TODO: better integration to prevent high-speed orbits from flting off
+        step_size_half = step_size/2
+
+        a = self.force(env, self.p)
+        v_mid = self.v + step_size_half * a
+        p_mid = self.p + step_size_half * v_mid
+        a_mid = self.force(env, p_mid)
+        self.v = self.v + step_size * a_mid
+        self.p = self.p + step_size * self.v
+
+        '''self.v = self.v + step_size * a
+        self.p = self.p + step_size * self.v'''
+
+        self.h.append(self.p)
+
+    def force(self, env, position):
+        forces = None
+        if self.fixed:
+            forces = np.array([0,0])
+        else:
+            forces = []
+            for other in env:
+                if not np.array_equal(other.p, self.p):
+                    forces.append(self._force(position, other))
+            forces = np.asarray(forces)
+            forces = forces.sum(axis=0)
+        return forces
+
+    def _force(self, position, other):
+        displacement = other.p - position
+        r_squared = displacement[0]**2 + displacement[1]**2
+        r_mag = np.sqrt(r_squared)
+
+        unit_disp = displacement/r_mag
+        acceleration = other.mass*unit_disp/r_squared  # + 0.2*other.mass*unit_disp/(r_squared*r_mag)
+
+        return np.array(acceleration)
+
+
+env = [particle(position=[-1.0, 0], velocity=[0, 1.40]), particle(position=[0, 0], velocity=[0, 0], fixed=True)]
+for _ in range(5000):
+    for item in env:
+        item.move(env, step_size=0.05)
+
+history = np.array(env[0].h)
+plt.plot(history[:, 0], history[:, 1])
+plt.show()
