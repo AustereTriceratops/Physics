@@ -6,3 +6,5 @@ There's a probability that pairs don't meet, which is controlled by a social dis
 Disease will last for three time steps before agents recover, with a probability of dying at each time step.
 
 ![](/PandemicModels/Pandemic.png)
+
+![](/PandemicModels/Distancing.png)
