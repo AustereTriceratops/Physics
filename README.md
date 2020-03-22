@@ -1,6 +1,7 @@
 # Physics
 Various physics simuations done in Python and Processing. Below are some renders from these programs.
 
+![](/PandemicModels/Pandemic.png)
 
 ![Poincare map of a driven damped pendulum](https://i.imgur.com/w98enjk.png)
 
