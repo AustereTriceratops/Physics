@@ -5,6 +5,6 @@ Agents in a population are randomly paired together with a probability of transm
 There's a probability that pairs don't meet, which is controlled by a social distancing factor. 
 Disease will last for three time steps before agents recover, with a probability of dying at each time step.
 
-![](/PandemicModels/Pandemic.png)
+![](/PandemicModels/images/Pandemic.png)
 
-![](/PandemicModels/Distancing.png)
+![](/PandemicModels/images/FlatteningCurve.png)
